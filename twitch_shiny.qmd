@@ -1,0 +1,338 @@
+---
+title: "Initiation à Shiny"
+author: "Marie Vaugoyeau"
+date: "2024/01/12"
+date-format: "D MMMM YYYY"
+format: 
+  pdf:
+    toc: true
+    number-sections: true
+    papersize: letter
+execute: 
+  warning: false
+---
+  
+*Ce support, produit pour le live du [**12 janvier 2024 sur Twitch**](https://www.twitch.tv/videos/2030237577), est mis à disposition selon les termes de la [Licence Creative Commons Attribution 4.0 International](http://creativecommons.org/licenses/by/4.0/).*  
+  
+# C'est quoi `Shiny` ?  
+  
+[![](img/logo_shiny.jpeg){width=10%}](https://shiny.posit.co/)  
+  
+`Shiny` est un package `R` qui permet de construire facilement des application type web.  
+  
+::: callout-tip
+## Définition : Une application    
+  
+C'est un objet informatique **manipulable directement, en ligne et sans installation**.  
+Il n'y a pas de nécessité à déployer sur le web.  
+L'application peut tourner en local sur un ordinateur ou un serveur.  
+:::
+  
+Avant `Shiny`, il était nécessaire d'avoir une bonne connaissance des technologies du web (`HTML`, `CSS`,...).  
+`Shiny` permet de :  
+  
+-   Générer simplement le `front-end`, **l'interface utilisateur.trice** et le `back-end`, la **structure** sans apprendre de langage web  
+-   Faire des **tableaux de bords** mais aussi des **pages web** pour communiquer les résultats  
+-   Mettre en place une analyse de données en libre service    
+-   Gérer des cartes, des tableaux, des graphiques, des questionnaires...  
+   
+   
+# Etapes de création d'une application  
+  
+-   Avoir une idée : Cela paraît évident mais développer une appli prends du temps donc si on n'a pas d'idée forte derrière c'est encore plus long.    
+-   Documenter les besoins et attentes des utilisateur.trice.s : Même si tu es ton utilisateur.trice il est nécessaire de lister ce dont tu as besoin pour cette application.    
+-   Relier les besoins et attentes à des actions : Une fois les besoins rassemblés dans un seul fichier, il est nécessaire de lister ce qu'il va falloir faire.    
+-   Lister les données nécessaires : Action et besoins vont permettre de décrire les données nécessaires dans l'appli.    
+-   Réaliser une maquette simple : Il est important de prévoir à quoi ressemblera la futur appli.    
+-   Coder l'application  
+-   Faire tourner en local  
+-   Déployer l'application (non traité ici)  
+  
+# Préparation de l'application  
+## Le blueprint  
+Les besoins et attentes peuvent être documentés suite à des interviews, des discussions, des rapports. Cela peut vite devenir chronophage avec la démultiplication des sources.  
+  
+Il est important de les lister dans un unique fichier.  
+Ce fichier doit-être construit et validé par les participant.e.s au projet.  
+Le blueprint doit contenir les besoins utilisateurs mais aussi les actions à réaliser associer à chaque besoin.  
+Il faut aussi les relier aux données nécessaire pour y répondre.  
+  
+## Exemple de blueprint  
+  
+|                   **Besoins utilisateurs**                    |          **Action à réaliser**          |                 **Données nécessaires**                 |
+|:-----------------------:|:--------------------:|:----------------------:|
+| Visualiser l'évolution de la taille de la colonie bactérienne |  Réalisation et affichage du graphique  |       Nombre de cellules selon la date de mesure        |
+|                                                               |                                         |                                                         |
+|            Sélection de l'environnement de culture            | Liste déroulant avec les environnements | Type d'environnement et filtre appliqué sur les données |
+  
+## Maquetter l'application avec un Mock-up   
+  
+::: callout-tip
+## Idée principale
+  
+Représenter la structure de la future application  
+:::
+    
+La maquette s'appuie sur le blueprint. Elle doit prendre en compte les besoins des utilisateurs-trices et les actions à réaliser.  
+Bien sûr, la maquette évolue au cours de la vie de l'application.  
+  
+![](img/Mockup.jpg){width=50%} ![](img/Example-of-a-mockup.png){width=50%}  
+
+![](img/New-Personal-Portfolio-App-Mockup.png){width=50%}  
+  
+  
+# Comprendre la structure de l'application Shiny  
+  
+Toutes les applications ont :  
+
+-   une partie `User Interface` qui permet de gérer le `Front-End`, c'est-à-dire à quoi l'**application ressemble**  
+-   une partie `Server` qui gère le `Back-End`, c'est-à-dire les mécanismes sous jacents ou **que fait l'application**   
+  
+::: callout-note  
+## A retenir  
+  
+Dans une application Shiny, l'interface utilisateur.trice est géré par la fonction ou le fichier `ui` et les coulisses par la fonction ou le fichier `Server`.  
+:::
+
+![](img/server_ui.png)  
+  
+# Miroir des fonctions `output` / `render`  
+| **ui** | **server** |  
+|:-----------------------:|:--------------------:|
+| `plotOutput()` | `renderPlot()` |  
+| `textOutput()` | `renderText()` |  
+| `dataTableOutput()` du package `{DT}` | `renderDataTable()` du package `{DT}` |  
+| `leafletOutput()` du package `{leaflet}` | `renderLeaflet()` du package `{leaflet}` |  
+| | |
+| `sliderInput()`  | 
+| `dateInput()` | 
+| `checkboxInput()` | `input$nom_de_l_input` | 
+| `textInput()` |
+| `passewordInput()` | 
+  
+::: callout-tip  
+## Nommer un input  
+   
+Les identifiant des `input` peuvent contenir des lettres, des nombres et des underscores `_`, rien d'autre.  
+Ils sont nécessairement **être uniques** !  
+:::
+  
+# Créer une application dans un projet  
+  
+Ensemble créons une première application dans un projet grâce à `New projet` > `New Directory` > `Shiny Application`.  
+  
+::: callout-tip
+## Et maintenant ? 
+  
+Explorons ensemble cette application.  
+:::
+ 
+ 
+# Application d'un thème  
+Lors du live, j'ai montré comment utiliser la fonction `themeSelector()` du package `{shinythemes}` pour tester différents thèmes disponibles.  
+```{r}
+#| eval: false
+
+ui <- fluidPage(
+  
+  shinythemes::themeSelector(),
+
+  titlePanel("Graphique Old Faithful Geyser Data"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30)
+    ),
+    
+    # Show a plot of the generated distribution
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
+
+```
+  
+J'ai aussi montrer comment appliquer un thème choisi dans le package `{bslib}` qui est associé à `Bootstrap`.  
+```{r}
+#| eval: false
+
+ui <- fluidPage(
+  
+  theme = bslib::bs_theme(bootswatch = "minty"),
+
+  titlePanel("Graphique Old Faithful Geyser Data"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30)
+    ),
+    
+    # Show a plot of the generated distribution
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+)
+```
+  
+::: callout-caution  
+## Shiny permet de se passer de `Bootstrap`  
+  
+`Bootstrap` est un ensemble d'outils qui permet d'intégrer aux applications des boutons, des éléments interactifs...  
+Il est codé en `HTML`, `CSS` et `JavaScript`  
+:::
+  
+# Ajout d'onglet   
+J'en ai très rapidement parlé lors du live, il est possible de rajouter des onglets pour structurer l'appli. Ils peuvent être rajouter à différents niveaux mais aussi horizontalement et verticalement.  
+Ce que j'ai utiliser dans le live c'est `navlistPanel()` qui présente les titres dans une barre latérale :  
+```{r}
+#| eval: false
+
+ui <- fluidPage(
+  
+  theme = bslib::bs_theme(bootswatch = "minty"),
+
+  navlistPanel(
+    tabPanel(
+      "Graphique Old Faithful Geyser Data",
+      sidebarLayout(
+        sidebarPanel(
+          sliderInput("bins",
+                      "Number of bins:",
+                      min = 1,
+                      max = 50,
+                      value = 30)
+        ),
+        
+        # Show a plot of the generated distribution
+        mainPanel(
+          plotOutput("distPlot")
+        )
+      )
+    ),
+    tabPanel(
+      "plotly",
+      plotlyOutput("mon_graphique")
+    )
+  )
+)
+```
+  
+# Ajout d'un graphique `ggplot` avec l'intéractivité via `{plotly}`  
+Il est conseillé de créer le graphique avant de le rendre intéractif grâce à `{plotly}`.  
+Le graphique sera appelé dans la partie `ui` grâce à la fonction `plotlyOutput()` et créer dans la partie `sevrer` grâce à la fonction `renderPlotly()` grâce au package `{plotly}`.  
+  
+```{r}
+#| eval: false
+
+ui <- fluidPage(
+  
+  theme = bslib::bs_theme(bootswatch = "minty"),
+
+  navlistPanel(
+    tabPanel(
+      "Graphique Old Faithful Geyser Data",
+      sidebarLayout(
+        sidebarPanel(
+          sliderInput("bins",
+                      "Number of bins:",
+                      min = 1,
+                      max = 50,
+                      value = 30)
+        ),
+        
+        # Show a plot of the generated distribution
+        mainPanel(
+          plotOutput("distPlot")
+        )
+      )
+    ),
+    tabPanel(
+      "plotly",
+      plotlyOutput("mon_graphique")
+    )
+  )
+)
+
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+
+    output$distPlot <- renderPlot({
+        # generate bins based on input$bins from ui.R
+        x    <- faithful[, 2]
+        bins <- seq(min(x), max(x), length.out = input$bins + 1)
+
+        # draw the histogram with the specified number of bins
+        hist(x, breaks = bins, col = 'darkgray', border = 'white',
+             xlab = 'Waiting time to next eruption (in mins)',
+             main = 'Histogram of waiting times')
+    })
+    
+    graphique_ggplot <- ggplot(iris) +
+      aes(x = Petal.Width, y =  Petal.Length, color = Species) + 
+      geom_point(alpha = 0.4) +
+      geom_smooth(method = "lm") +
+      theme_classic()
+    
+    output$mon_graphique <- renderPlotly(graphique_ggplot)
+}
+
+```
+
+  
+# Des ressources pour utiliser `Shiny`  
+`Shiny` est porté par [![](img/Posit-Logo.jpg){width=10%}](https://shiny.posit.co/) (anciennement RStudio)   
+Sur le site, il y a des [tutoriels](https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/index.html) et pleins d'exemples sont disponibles dans la [galerie de Shiny](https://shiny.posit.co/r/gallery/) avec le code associé.     
+  
+  
+# Pour aller plus loin    
+Pour plus d'information sur la réactivité :  
+   
+- [**Le guide complet pour comprendre la réactivité en Shiny** par Charles   BORDET](https://www.charlesbordet.com/fr/reactive-shiny/#)  
+- [Le chapitre **Mastering reactivity** de **Mastering Shiny** par Hadley Wickham](https://mastering-shiny.org/reactivity-intro.html)  
+- [Le chapitre **Best practices** de **Mastering Shiny** par Hadley Wickham](https://mastering-shiny.org/scaling-intro.html)  
+- Pour une réactivité spécifique aux cartes, il est conseillé d'utiliser le package [`{leafletProxy}`](https://rstudio.github.io/leaflet/shiny.html)   
+  
+Et d'autres packages cools :  
+  
+- [`{shinymanager}`](https://datastorm-open.github.io/shinymanager/) : package pour créer un accès sécurisé  
+- [`{webR}`]() : Package qui permet de coder en R dans un navigateur. Pour d'informations pour l'utiliser afin de déployer une appli Shiny :   
+    - [*Build serverless shiny application via Github page* article de blog de **R-posts.com**](http://r-posts.com/build-serverless-shiny-application-via-github-page/)  
+    - [*Preloading your R packages in webR in an Express JS API article de blog* écrit par Colin FAY](https://colinfay.me/preloading-your-r-packages-in-webr-in-an-express-js-api/)  
+  
+# En savoir un peu plus sur moi  
+Bonjour, 
+  
+Je suis Marie Vaugoyeau et je suis disponible pour des **missions en freelance** d’**accompagnement à la formation** à R et à l’analyse de données et/ou en **programmation** (reprise de scripts, bonnes pratiques de codage, développement de package).  
+Ayant un **bagage recherche en écologie**, j’ai accompagné plusieurs chercheuses en biologie dans leurs analyses de données mais je suis ouverte à d’autres domaines.  
+  
+Vous pouvez retrouver mes offres [ici](https://marievaugoyeau.notion.site/MStats-Marie-Vaugoyeau-d69b566c83414152ac85eae012c970fb).  
+  
+**En plus de mes missions de consulting je diffuse mes savoirs en R et analyse de données sur plusieurs plateformes :**   
+  
+- J’ai écrit [un **livre** aux éditions ENI](https://www.editions-eni.fr/livre/langage-r-et-statistiques-initiation-a-l-analyse-de-donnees-9782409036934)  
+- Tous les mois je fais [un **live sur Twitch**](https://www.twitch.tv/marievaugoyeau/videos) pour parler d’un package de R, d’une analyse  
+- Je rédige une **newsletter** de manière irrégulière pour parler de mes **inspirations** et transmettre **des trucs et astuces sur R**. Pour s’y inscrire, [c’est par là](https://d1154691.sibforms.com/serve/MUIEAGj4fIubg6D4qHb7BoZSxNhzkV4p2L0I7GHpNopbqPeDS1J0SpOgaTDCavroygrDTCukB0La-8s1nsQw5wCANT5UP64en1GudsGbKhGVlwbvP_bJdAJ0ECF9BOZ1swRKEnKlnWzTHpLjknJvrCXiH_xw4F_go_2kVB0dWWrkJzRoE22BXImtgVOu29gBxx2hjFkINdeW7Cae?). J’ai aussi [un **blog**](https://mvaugoyeau.netlify.app/fr/) sur lequel vous pourrez retrouver une version de cet article.  
+  
+Pour en savoir encore un peu plus sur moi, il y a [LinkedIn](https://www.linkedin.com/in/marie-vaugoyeau-72ab64153/) et pour retrouver [tous ces liens et plus encore, c'est ici](https://linktr.ee/mstats)  
+  
+**N’hésitez pas à me contacter sur [marie.vaugoyeau@gmail.com](mailto:marie.vaugoyeau@gmail.com) !**  
+  
+Bonne journée   
+  
+Marie  
+  
+![](https://marievaugoyeau.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F776bf262-88b1-411e-9b96-c9e17225fa90%2FbandeauNotion.png?table=block&id=d69b566c-8341-4152-ac85-eae012c970fb&spaceId=99f23b20-d2e7-47f3-bed1-0a3e9cfa7597&width=2000&userId=&cache=v2)  
+   
+
+
+  
