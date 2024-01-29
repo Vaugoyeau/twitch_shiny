@@ -13,6 +13,8 @@ execute:
 ---
   
 *Ce support, produit pour le live du [**12 janvier 2024 sur Twitch**](https://www.twitch.tv/videos/2030237577), est mis à disposition selon les termes de la [Licence Creative Commons Attribution 4.0 International](http://creativecommons.org/licenses/by/4.0/).*  
+
+Ce support est aussi disponible sur [mon blog](https://mvaugoyeau.netlify.app/posts/shiny/).  
   
 # C'est quoi `Shiny` ?  
   
@@ -39,13 +41,13 @@ Avant `Shiny`, il était nécessaire d'avoir une bonne connaissance des technolo
    
 # Etapes de création d'une application  
   
--   Avoir une idée : Cela paraît évident mais développer une appli prends du temps donc si on n'a pas d'idée forte derrière c'est encore plus long.    
--   Documenter les besoins et attentes des utilisateur.trice.s : Même si tu es ton utilisateur.trice il est nécessaire de lister ce dont tu as besoin pour cette application.    
--   Relier les besoins et attentes à des actions : Une fois les besoins rassemblés dans un seul fichier, il est nécessaire de lister ce qu'il va falloir faire.    
--   Lister les données nécessaires : Action et besoins vont permettre de décrire les données nécessaires dans l'appli.    
--   Réaliser une maquette simple : Il est important de prévoir à quoi ressemblera la futur appli.    
--   Coder l'application  
--   Faire tourner en local  
+-   **Avoir une idée** : Cela paraît évident mais développer une appli prends du temps donc si on n'a pas d'idée forte derrière c'est encore plus long.    
+-   **Documenter les besoins et attentes des utilisateur.trice.s** : Même si tu es ton utilisateur.trice il est nécessaire de lister ce dont tu as besoin pour cette application.    
+-   **Relier les besoins et attentes à des actions** : Une fois les besoins rassemblés dans un seul fichier, il est nécessaire de lister ce qu'il va falloir faire.    
+-   **Lister les données nécessaires** : Action et besoins vont permettre de décrire les données nécessaires dans l'appli.    
+-   **Réaliser une maquette simple** : Il est important de prévoir à quoi ressemblera la futur appli.    
+-   **Coder l'application**  
+-   **Faire tourner en local**  
 -   Déployer l'application (non traité ici)  
   
 # Préparation de l'application  
@@ -119,17 +121,17 @@ Ils sont nécessairement **être uniques** !
   
 # Créer une application dans un projet  
   
-Ensemble créons une première application dans un projet grâce à `New projet` > `New Directory` > `Shiny Application`.  
+Création d'une première application dans un projet grâce à `New projet` > `New Directory` > `Shiny Application`.  
   
 ::: callout-tip
 ## Et maintenant ? 
   
-Explorons ensemble cette application.  
+Exploration de cette application [dans la vidéo](https://www.twitch.tv/videos/2030237577) à partir de la 25ème minute.  
 :::
  
  
 # Application d'un thème  
-Lors du live, j'ai montré comment utiliser la fonction `themeSelector()` du package `{shinythemes}` pour tester différents thèmes disponibles.  
+Lors du live, j'ai utilisé la fonction `themeSelector()` du package `{shinythemes}` pour tester différents thèmes disponibles.  
 ```{r}
 #| eval: false
 
@@ -157,7 +159,7 @@ ui <- fluidPage(
 
 ```
   
-J'ai aussi montrer comment appliquer un thème choisi dans le package `{bslib}` qui est associé à `Bootstrap`.  
+J'ai aussi appliqué un thème choisi dans le package `{bslib}` qui est associé à `Bootstrap`.  
 ```{r}
 #| eval: false
 
